@@ -18,5 +18,8 @@ export default {
   },
   setRoomId(state, payload) {
     state.roomId = payload
+  },
+  setGame(state, payload) {
+    state.game = payload
   }
 }

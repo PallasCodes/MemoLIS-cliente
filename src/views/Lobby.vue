@@ -9,6 +9,13 @@ export default {
   name: 'Lobby',
   mounted() {
     this.$socket.emit('ROOM_join', this.$store.getters.roomId)
+  },
+  sockets: {
+    GAME_gameStarted(game) {
+      console.log(game)
+      this.$store.commit('setGame', game)
+      this.$router.replace({ name: 'Game'})
+    }
   }
 }
 </script>

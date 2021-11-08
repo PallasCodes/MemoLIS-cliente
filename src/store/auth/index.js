@@ -10,7 +10,8 @@ export default {
       username: null,
       roomId: null,
       friends: [],
-      onlinePlayers: []
+      onlinePlayers: [],
+      game: null
     }
   },
   mutations,

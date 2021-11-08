@@ -16,7 +16,7 @@
       </svg>
     </router-link>
     <!-- end ARROW icon -->
-    <h2 class="text-2xl">Crear Juego</h2>
+    <h2 class="text-2xl" :disabled="lobby.length>0">Crear Juego</h2>
     <button
       @click="startGame"
       class="p-2 text-lg rounded font-semibold text-white bg-blue-500 my-6"
@@ -88,6 +88,11 @@ export default {
     ROOM_userJoined(user) {
       this.lobby.push(user)
     },
+    GAME_gameStarted(game) {
+      console.log(game)
+      this.$store.commit('setGame', game)
+      this.$router.replace({ name: 'Game'})
+    }
   },
   methods: {
     sendInvite(socketId) {
