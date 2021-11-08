@@ -5,6 +5,7 @@
         v-for="(card, index) in cards"
         :key="index"
         @click="flipCard(index)"
+        class="card"
         :class="card.animate ? 'animate__animated animate__flipInY' : ''"
       >
         <div
@@ -56,25 +57,25 @@
           shadow
         "
       >
-        <ul id="messages" class="h-full"></ul>
-        <input
-          type="text"
-          placeholder="Escribe algo..."
-          class="border p-2 w-full text-sm outline-none"
-        />
+        <ul id="messages" class="h-full p-2 text-sm text-gray-700">
+          <li v-for="(message, index) in getMessages" :key="index">
+            {{ message.username }} - {{ message.text }}
+          </li>
+        </ul>
+        <form @submit.prevent="sendMessage">
+          <input
+            v-model="message"
+            type="text"
+            placeholder="Escribe algo..."
+            class="border p-2 w-full text-sm outline-none"
+          />
+        </form>
       </div>
-      <div id="players" class="mt-4 text-lg font-medium grid grid-cols-1 gap-1">
-        <p>
-          Pallas <span class="text-sm font-normal text-gray-500">5 pts</span>
-          <span class="ml-3 font-normal">{{ timeLeft }}</span>
+      <div id="players" class="mt-4 grid grid-cols-1 gap-1">
+        <p v-for="player in getPlayers" :key="player.userId">
+          <span class="text-lg font-semibold">{{ player.username }}</span>
+          <span class="text-gray-400 ml-2">{{ player.score }}pts</span>
         </p>
-        <p>
-          Bernardo <span class="text-sm font-normal text-gray-500">0 pts</span>
-        </p>
-        <p>
-          David <span class="text-sm font-normal text-gray-500">10 pts</span>
-        </p>
-        <p>UwU <span class="text-sm font-normal text-gray-500">5 pts</span></p>
       </div>
     </aside>
   </section>
@@ -87,13 +88,22 @@ export default {
     return {
       timeLeft: 10,
       cards: [],
+      message: '',
+      messages: [],
     }
+  },
+  computed: {
+    getPlayers() {
+      return this.$store.getters.game.players
+    },
+    getMessages() {
+      return this.messages
+    },
   },
   methods: {
     initTimer() {
       const timer = setInterval(() => {
-        if (this.timeLeft <= 0)
-          clearInterval(timer)
+        if (this.timeLeft <= 0) clearInterval(timer)
         this.timeLeft--
       }, 1000)
     },
@@ -105,6 +115,15 @@ export default {
         this.cards[index].animate = false
       }, 2100)
     },
+    sendMessage() {
+      this.$socket.emit('GAME_message', this.message)
+      this.message = ''
+    },
+  },
+  sockets: {
+    GAME_message(message) {
+      this.messages.push(message)
+    },
   },
   mounted() {
     this.cards = this.$store.getters.game.cards
@@ -113,7 +132,7 @@ export default {
 </script>
 
 <style scoped>
-li {
+.card {
   @apply bg-purple-500 rounded-xl shadow-sm cursor-pointer h-32 hover:bg-purple-700 transition-colors ease-in duration-200 flex flex-col p-2 relative overflow-hidden;
 }
 </style>
