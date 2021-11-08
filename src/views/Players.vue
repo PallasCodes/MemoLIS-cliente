@@ -1,0 +1,116 @@
+<template>
+  <section id="players">
+    <!-- ARROW icon -->
+    <router-link to="/">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        class="h-7 w-7 mb-1"
+        viewBox="0 0 20 20"
+        fill="currentColor"
+      >
+        <path
+          fill-rule="evenodd"
+          d="M10 18a8 8 0 100-16 8 8 0 000 16zm.707-10.293a1 1 0 00-1.414-1.414l-3 3a1 1 0 000 1.414l3 3a1 1 0 001.414-1.414L9.414 11H13a1 1 0 100-2H9.414l1.293-1.293z"
+          clip-rule="evenodd"
+        />
+      </svg>
+    </router-link>
+    <!-- end ARROW icon -->
+    <h2 class="text-2xl text-gray-100 mb-4">Jugadores</h2>
+    <form
+      @submit.prevent="searchPlayer"
+      class="flex bg-white max-w-xs items-center px-2 py-1 rounded-xl mb-4"
+    >
+      <input
+        v-model="search"
+        type="text"
+        placeholder="Buscar"
+        class="w-full outline-none text-gray-600 text-lg"
+        autofocus
+      />
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        class="h-5 w-5 text-gray-600"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+        />
+      </svg>
+    </form>
+
+    <p v-for="player in getPlayers" :key="player.id" class="mt-2">
+      <span class="mr-2">{{ player.username }} - {{ player.score }}</span>
+      <button
+        @click="addPlayer(player.id)"
+        class="
+          text-xs
+          font-medium
+          bg-blue-500
+          py-1
+          px-2
+          rounded
+          hover:bg-blue-600
+          transition-colors
+          ease
+          duration-300
+        "
+      >
+        + Agregar
+      </button>
+    </p>
+  </section>
+</template>
+
+<script>
+import axios from 'axios'
+
+export default {
+  name: 'Players',
+  data() {
+    return {
+      players: [],
+      search: '',
+    }
+  },
+  computed: {
+    getPlayers() {
+      return this.players.filter(
+        (player) => player.id != this.$store.getters.userId
+      )
+    },
+  },
+  mounted() {
+    axios
+      .get('/user')
+      .then((response) => {
+        this.players = response.data.users
+      })
+      .catch((error) => console.error(error))
+  },
+  methods: {
+    searchPlayer() {
+      axios
+        .get('/user/' + this.search)
+        .then((response) => {
+          console.log(response)
+          this.players = response.data.users
+        })
+        .catch((error) => console.error(error))
+    },
+    addPlayer(id) {
+      const payload = {
+        sentTo: id,
+        userId: this.$store.getters.userId,
+      }
+      this.$socket.emit('USER_friendRequest', payload)
+    },
+  },
+}
+</script>
+ 
