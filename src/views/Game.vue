@@ -2,13 +2,14 @@
   <section id="game" class="flex">
     <ul id="cards-list" class="grid grid-cols-6 gap-2 mr-4 flex-grow">
       <li
-        v-for="(card, index) in cards"
+        v-for="(card, index) in getCards"
         :key="index"
         @click="flipCard(index)"
         class="card"
         :class="card.animate ? 'animate__animated animate__flipInY' : ''"
       >
         <div
+          v-if="card.flipped"
           class="
             absolute
             top-0
@@ -29,6 +30,7 @@
           }}</span>
         </div>
         <div
+          v-if="!card.flipped"
           class="
             h-32
             bg-purple-500
@@ -37,11 +39,9 @@
             left-0
             bottom-0
             z-10
-            transition-opacity
             ease
             duration-500
           "
-          :class="card.flipped ? 'opacity-0' : 'opacity-100'"
         ></div>
       </li>
     </ul>
@@ -71,12 +71,12 @@
           />
         </form>
       </div>
-      <div id="players" class="mt-4 grid grid-cols-1 gap-1">
-        <p v-for="player in getPlayers" :key="player.userId">
+      <ul id="players" class="mt-4 grid grid-cols-1 gap-1">
+        <li v-for="player in getPlayers" :key="player.userId">
           <span class="text-lg font-semibold">{{ player.username }}</span>
           <span class="text-gray-400 ml-2">{{ player.score }}pts</span>
-        </p>
-      </div>
+        </li>
+      </ul>
     </aside>
   </section>
 </template>
@@ -86,34 +86,52 @@ export default {
   name: 'Game',
   data() {
     return {
-      timeLeft: 10,
       cards: [],
       message: '',
       messages: [],
+      currentTurn: null,
+      card1: null,
+      card2: null,
     }
   },
   computed: {
     getPlayers() {
       return this.$store.getters.game.players
     },
+    getCards() {
+      return this.$store.getters.game.cards
+    },
     getMessages() {
       return this.messages
     },
+    getTurn() {
+      return this.$store.getters.game.turn
+    },
   },
   methods: {
-    initTimer() {
-      const timer = setInterval(() => {
-        if (this.timeLeft <= 0) clearInterval(timer)
-        this.timeLeft--
-      }, 1000)
-    },
     flipCard(index) {
-      this.initTimer()
-      this.cards[index].animate = true
-      this.cards[index].flipped = !this.cards[index].flipped
-      setTimeout(() => {
-        this.cards[index].animate = false
-      }, 2100)
+      if (this.getTurn == this.$store.getters.userId) {
+        // card flip animation
+        this.cards[index].animate = true
+        this.cards[index].flipped = true
+        setTimeout(() => {
+          this.cards[index].animate = false
+        }, 2100)
+
+        // cache cards state
+        if (!this.card1) {
+          this.card1 = this.cards[index]
+        } else if (!this.card2) {
+          this.card2 = this.cards[index]
+          // send turn
+          const cards = { card1: this.card1, card2: this.card2 }
+          this.$socket.emit('GAME_turn', cards)
+          this.card1 = null
+          this.card2 = null
+        }
+      } else {
+        console.log('not your turn')
+      }
     },
     sendMessage() {
       this.$socket.emit('GAME_message', this.message)
@@ -124,9 +142,20 @@ export default {
     GAME_message(message) {
       this.messages.push(message)
     },
+    GAME_turn(game) {
+      console.log(game)
+      this.$store.commit('setGame', game)
+    },
   },
   mounted() {
     this.cards = this.$store.getters.game.cards
+    this.cards.forEach(card => {
+      card.flipped = false
+      card.animate = false
+    })
+
+    // set turn number
+    this.currentTurn = this.$store.getters.game.turn  
   },
 }
 </script>

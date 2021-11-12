@@ -1,5 +1,7 @@
 <template>
   <section id="signup">
+    <button @click="toggleLang">Cambiar idioma</button>
+    <h1>{{ t('test', {}, { locale: lang }) }}</h1>
     <h2 class="text-2xl text-center font-bold my-4">Iniciar sesión</h2>
     <form @submit.prevent="login" class="max-w-xs mx-auto">
       <div class="mb-2">
@@ -33,17 +35,27 @@
 
 
 <script>
+import { useI18n } from 'vue-i18n'
+
 export default {
   name: 'Login',
+  setup() {
+    const { t, locale } = useI18n()
+    return { t, locale }
+  },
   data() {
     return {
       formData: {
         email: '',
         password: '',
       },
+      lang: 'es',
     }
   },
   methods: {
+    toggleLang() {
+      this.lang === 'es' ? (this.lang = 'en') : (this.lang = 'es')
+    },
     async login() {
       await this.$store.dispatch('login', this.formData)
       const redirectUrl = '/' + (this.$route.query.redirect || '')
