@@ -21,5 +21,8 @@ export default {
   },
   setGame(state, payload) {
     state.game = payload
+  },
+  flipCard(state, payload) {
+    state.game.cards[payload.index].player = payload.player
   }
 }
