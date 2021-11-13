@@ -8,7 +8,6 @@ import SignUp from '../views/SignUp.vue'
 import CreateGame from '../views/CreateGame.vue'
 import Game from '../views/Game.vue'
 import Lobby from '../views/Lobby.vue'
-import ModalTest from '../views/ModalTest.vue'
 
 const routes = [
   {
@@ -16,11 +15,6 @@ const routes = [
     path: '/',
     component: Home,
     meta: { requiresAuth: true },
-  },
-  {
-    name: 'ModalTest',
-    path: '/modaltest',
-    component: ModalTest,
   },
   {
     name: 'Players',

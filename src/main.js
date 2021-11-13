@@ -14,8 +14,12 @@ import axios from 'axios'
 import VueSocketIO from 'vue-3-socket.io'
 import { createI18n } from 'vue-i18n'
 
+const SERVER_URL = process.env.VUE_APP_SERVER_URL
+
+console.log(process.env.VUE_APP_SERVER_URL)
+
 // axios
-axios.defaults.baseURL = 'http://localhost:3000'
+axios.defaults.baseURL = SERVER_URL
 
 // i18n
 const i18n = createI18n({
@@ -29,7 +33,7 @@ app.use(i18n)
 app.use(
   new VueSocketIO({
     debug: true,
-    connection: 'http://localhost:3000',
+    connection: SERVER_URL,
     options: {},
   })
 )

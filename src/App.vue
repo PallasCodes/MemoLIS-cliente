@@ -26,6 +26,7 @@ export default {
       }
       this.$socket.emit('USER_login', payload)
     }
+    console.log(process.env.SERVER_URL)
   },
 }
 </script>
