@@ -16,8 +16,6 @@ import { createI18n } from 'vue-i18n'
 
 const SERVER_URL = process.env.VUE_APP_SERVER_URL
 
-console.log(process.env.VUE_APP_SERVER_URL)
-
 // axios
 axios.defaults.baseURL = SERVER_URL
 
