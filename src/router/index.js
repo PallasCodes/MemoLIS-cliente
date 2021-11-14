@@ -8,6 +8,7 @@ import SignUp from '../views/SignUp.vue'
 import CreateGame from '../views/CreateGame.vue'
 import Game from '../views/Game.vue'
 import Lobby from '../views/Lobby.vue'
+import PageNotFound from '../views/PageNotFound.vue'
 
 const routes = [
   {
@@ -27,7 +28,7 @@ const routes = [
     path: '/create-game',
     component: CreateGame,
     meta: { requiresAuth: true },
-    props: { roomId: String }
+    props: { roomId: String },
   },
   {
     name: 'Lobby',
@@ -52,6 +53,8 @@ const routes = [
     component: SignUp,
     meta: { requiresUnauth: true },
   },
+  // 404
+  { path: '/:pathMatch(.*)*', component: PageNotFound },
 ]
 
 const router = createRouter({
