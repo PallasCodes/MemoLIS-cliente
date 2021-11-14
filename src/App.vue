@@ -17,16 +17,14 @@ export default {
   components: {
     TheNavbar,
   },
-  created() {
+  mounted() {
     this.$store.dispatch('autoLogin')
-    if (this.$store.getters.isAuthenticated){
-      const payload = {
+    if (this.$store.getters.isAuthenticated) {
+      this.$socket.emit('USER_login', {
         userId: this.$store.getters.userId,
-        username: this.$store.getters.username
-      }
-      this.$socket.emit('USER_login', payload)
+        username: this.$store.getters.username,
+      })
     }
-    console.log(process.env.SERVER_URL)
   },
 }
 </script>

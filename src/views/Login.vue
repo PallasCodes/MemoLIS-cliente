@@ -59,6 +59,12 @@ export default {
     async login() {
       await this.$store.dispatch('login', this.formData)
       const redirectUrl = '/' + (this.$route.query.redirect || '')
+      if (this.$store.getters.isAuthenticated) {
+        this.$socket.emit('USER_login', {
+          userId: this.$store.getters.userId,
+          username: this.$store.getters.username,
+        })
+      }
       this.$router.replace(redirectUrl)
     },
   },

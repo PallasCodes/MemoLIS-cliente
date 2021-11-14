@@ -79,17 +79,14 @@ export default {
     },
     USER_userConnected(user) {
       this.friends.push(user)
-      console.log(user)
     },
     USER_userDisconnected(user) {
-      console.log(user)
-      this.friends = this.friends.filter((friend) => friend.id != user.id)
+      this.friends = this.friends.filter((friend) => friend.userId != user.userId)
     },
     ROOM_userJoined(user) {
       this.lobby.push(user)
     },
     GAME_gameStarted(game) {
-      console.log(game)
       this.$store.commit('setGame', game)
       this.$router.replace({ name: 'Game'})
     }
