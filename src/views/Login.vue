@@ -36,6 +36,8 @@
 
 <script>
 import { useI18n } from 'vue-i18n'
+import { createToast } from 'mosha-vue-toastify'
+import 'mosha-vue-toastify/dist/style.css'
 
 export default {
   name: 'Login',
@@ -57,15 +59,33 @@ export default {
       this.lang === 'es' ? (this.lang = 'en') : (this.lang = 'es')
     },
     async login() {
-      await this.$store.dispatch('login', this.formData)
-      const redirectUrl = '/' + (this.$route.query.redirect || '')
-      if (this.$store.getters.isAuthenticated) {
+      try {
+        await this.$store.dispatch('login', this.formData)
+        const redirectUrl = '/' + (this.$route.query.redirect || '')
+        if (this.$store.getters.isAuthenticated) {
         this.$socket.emit('USER_login', {
           userId: this.$store.getters.userId,
           username: this.$store.getters.username,
         })
       }
       this.$router.replace(redirectUrl)
+      } catch (error) {
+        console.error(error)
+        createToast(
+          {
+            title: 'Error',
+            description:
+              'Ocurrió un error en el servidor. Inténtalo más tarde.',
+          },
+          {
+            type: 'danger',
+            hideProgressBar: 'true',
+            transition: 'slide',
+            position: 'bottom-right',
+            showIcon: 'true'
+          }
+        )
+      }
     },
   },
 }

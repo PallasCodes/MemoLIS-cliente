@@ -51,6 +51,8 @@
 
 <script>
 import axios from 'axios'
+import { createToast } from 'mosha-vue-toastify'
+import 'mosha-vue-toastify/dist/style.css'
 
 export default {
   name: 'SignUp',
@@ -64,16 +66,44 @@ export default {
     }
   },
   methods: {
-    signup() {
-      console.log(this.formData)
-      axios
-        .post('/auth/signup', {
+    async signup() {
+      try {
+        await axios.post('/auth/signup', {
           username: this.formData.username,
           password: this.formData.password,
           email: this.formData.email,
         })
-        .then((result) => console.log(result))
-        .catch((error) => console.error(error))
+        createToast(
+          {
+            title: 'Yay',
+            description:
+              'Tu cuenta ha sido creada. Ahora puedes iniciar sesión.',
+          },
+          {
+            type: 'success',
+            hideProgressBar: 'true',
+            transition: 'slide',
+            position: 'bottom-right',
+            showIcon: 'true'
+          }
+        )
+      } catch (error) {
+        console.error(error)
+        createToast(
+          {
+            title: 'Error',
+            description:
+              'Ocurrió un error en el servidor. Inténtalo más tarde.',
+          },
+          {
+            type: 'danger',
+            hideProgressBar: 'true',
+            transition: 'slide',
+            position: 'bottom-right',
+            showIcon: 'true'
+          }
+        )
+      }
     },
   },
 }

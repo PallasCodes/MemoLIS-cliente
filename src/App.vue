@@ -12,18 +12,36 @@
 
 <script>
 import TheNavbar from './components/layout/TheNavbar.vue'
+import { createToast } from 'mosha-vue-toastify'
+import 'mosha-vue-toastify/dist/style.css'
 
 export default {
   components: {
     TheNavbar,
   },
-  mounted() {
-    this.$store.dispatch('autoLogin')
-    if (this.$store.getters.isAuthenticated) {
-      this.$socket.emit('USER_login', {
-        userId: this.$store.getters.userId,
-        username: this.$store.getters.username,
-      })
+  async mounted() {
+    try {
+      await this.$store.dispatch('autoLogin')
+      if (this.$store.getters.isAuthenticated) {
+        this.$socket.emit('USER_login', {
+          userId: this.$store.getters.userId,
+          username: this.$store.getters.username,
+        })
+      }
+    } catch (error) {
+      createToast(
+        {
+          title: 'Error',
+          description: 'Ocurrió un error en el servidor. Inténtalo más tarde.',
+        },
+        {
+          type: 'danger',
+          hideProgressBar: 'true',
+          transition: 'slide',
+          position: 'bottom-right',
+          showIcon: 'true',
+        }
+      )
     }
   },
 }

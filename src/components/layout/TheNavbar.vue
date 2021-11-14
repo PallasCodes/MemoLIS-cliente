@@ -2,7 +2,10 @@
   <nav
     class="sticky w-full py-3 flex justify-between items-center text-blue-600"
   >
-    <h1 class="text-3xl font-bold">MemoLIS</h1>
+    <div class="flex items-center">
+      <img src="/favicon.png" alt="MemoKIS icon" class="mr-2 h-6 w-6">
+      <h1 class="text-3xl font-bold">MemoLIS</h1>
+    </div>
     <div class="flex items-center justify-center" v-if="isLoggedIn">
       <div class="relative" @click="openNotifications">
         <div id="bells">

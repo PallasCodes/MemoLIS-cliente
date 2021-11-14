@@ -69,6 +69,8 @@
 
 <script>
 import axios from 'axios'
+import { createToast } from 'mosha-vue-toastify'
+import 'mosha-vue-toastify/dist/style.css'
 
 export default {
   name: 'Players',
@@ -85,23 +87,36 @@ export default {
       )
     },
   },
-  mounted() {
-    axios
-      .get('/user')
-      .then((response) => {
-        this.players = response.data.users
-      })
-      .catch((error) => console.error(error))
+  async mounted() {
+    try {
+      const response = await axios.get('/user')
+      this.players = response.data.users
+    } catch (error) {
+      console.error(error)
+    }
   },
   methods: {
-    searchPlayer() {
-      axios
-        .get('/user/' + this.search)
-        .then((response) => {
-          console.log(response)
-          this.players = response.data.users
-        })
-        .catch((error) => console.error(error))
+    async searchPlayer() {
+      try {
+        const response = await axios.get('/user/' + this.search)
+        this.players = response.data.users
+      } catch (error) {
+        console.error(error)
+        createToast(
+          {
+            title: 'Error',
+            description:
+              'Ocurrió un error en el servidor. Inténtalo más tarde.',
+          },
+          {
+            type: 'danger',
+            hideProgressBar: 'true',
+            transition: 'slide',
+            position: 'bottom-right',
+            showIcon: 'true',
+          }
+        )
+      }
     },
     addPlayer(id) {
       const payload = {
