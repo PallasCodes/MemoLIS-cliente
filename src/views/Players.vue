@@ -110,10 +110,10 @@ export default {
           },
           {
             type: 'danger',
-            hideProgressBar: 'true',
+            hideProgressBar: true,
             transition: 'slide',
             position: 'bottom-right',
-            showIcon: 'true',
+            showIcon: true,
           }
         )
       }

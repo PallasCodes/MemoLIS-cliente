@@ -16,3 +16,11 @@ body {
 .nav-btn {
   @apply h-7 w-7 cursor-pointer hover:text-indigo-800 transition-colors ease-in duration-300;
 }
+
+.input {
+  @apply w-full text-gray-600 py-1 px-2 rounded-md border-2 border-gray-500 mb-1;
+}
+
+.inputError {
+  @apply border-red-600;
+}
