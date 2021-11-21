@@ -33,7 +33,9 @@
         <h3 class="text-gray-700 text-lg mb-6">
           Puedes continuar chateando en la sala o salir al menú principal
         </h3>
-        <router-link to="/" class="font-semibold text-blue-500 mr-5">Menú principal</router-link>
+        <router-link to="/" class="font-semibold text-blue-500 mr-5"
+          >Menú principal</router-link
+        >
         <button
           @click="opened = false"
           class="bg-blue-500 font-semibold text-white px-2 py-1 rounded-md"
@@ -93,7 +95,13 @@
       </div>
       <ul id="players" class="mt-4 grid grid-cols-1 gap-1">
         <li v-for="player in getPlayers" :key="player.userId">
-          <span class="text-lg font-semibold">{{ player.username }}</span>
+          <span
+            class="text-lg font-semibold"
+            :class="
+              getTurn === player.userId ? '' : 'text-blue-500 font-bold'
+            "
+            >{{ player.username }}</span
+          >
           <span class="text-gray-400 ml-2">{{ player.score }}pts</span>
         </li>
       </ul>
@@ -179,7 +187,7 @@ export default {
       this.$store.commit('setGame', game)
       this.opened = true
       this.winner = game.winner
-    }
+    },
   },
   mounted() {
     this.cards = this.$store.getters.game.cards
