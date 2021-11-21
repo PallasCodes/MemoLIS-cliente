@@ -1,3 +1,47 @@
 {
-  "test": "prueba"
+  "test": "prueba",
+  "pages": {
+    "home": {
+      "createGameBtn": "Crear partida",
+      "playersBtn": "Jugadores",
+      "profileBtn": "Perfil",
+      "rankingBtn": "Clasificación"
+    },
+    "login": {
+      "title": "Iniciar sesión",
+      "form": {
+        "email": "Correo",
+        "password": "Contraseña",
+        "btn": "Iniciar sesión",
+        "msg": "¿No tienes cuenta?",
+        "cta": "registrate"
+      }
+    },
+    "signup": {
+      "title": "Registro",
+      "form": {
+        "email": "Correo",
+        "username": "Nombre de usuario",
+        "password": "Contraseña",
+        "repeatPassword": "Repetir contraseña",
+        "usernameMsg": "Introduce un nombre de usuario mayor a 4 caracteres",
+        "emailMsg" : "Introduce un correo con formato válido",
+        "passwordMsg" : "Introduce una contraseña mayor a 6 caracteres",
+        "repeatPasswordMsg" : "Las contraseñas deben de coincidir",
+        "btn": "Crear cuenta",
+        "msg": "¿Ya estás registrado?",
+        "cta": "inicia sesión"
+      }
+    },
+    "createGame": {
+      "title": "Crear partida",
+      "startBtn": "Iniciar partida",
+      "onlinePlayers": "Jugadores en línea"
+    },
+    "players": {
+      "title": "Jugadores",
+      "searchPlayer": "Buscar jugador",
+      "addPlayer": "Agregar"
+    }
+  }
 }

@@ -22,5 +22,8 @@ export default {
   },
   game(state) {
     return state.game
+  },
+  lang(state) {
+    return state.lang
   }
 }

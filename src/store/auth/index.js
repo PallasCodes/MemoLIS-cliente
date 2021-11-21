@@ -11,7 +11,8 @@ export default {
       roomId: null,
       friends: [],
       onlinePlayers: [],
-      game: null
+      game: null,
+      lang: 'es',
     }
   },
   mutations,

@@ -16,14 +16,18 @@
       </svg>
     </router-link>
     <!-- end ARROW icon -->
-    <h2 class="text-2xl" :disabled="lobby.length>0">Crear Juego</h2>
+    <h2 class="text-2xl" :disabled="lobby.length>0">
+       {{ t('pages.createGame.title', {}, { locale: $store.getters.lang }) }}
+    </h2>
     <button
       @click="startGame"
       class="p-2 text-lg rounded font-semibold text-white bg-blue-500 my-6"
     >
-      Iniciar juego
+     {{ t('pages.createGame.startBtn', {}, { locale: $store.getters.lang }) }}
     </button>
-    <h3 class="text-lg mt-2">Amigos conectados</h3>
+    <h3 class="text-lg mt-2">
+      {{ t('pages.createGame.onlinePlayers', {}, { locale: $store.getters.lang }) }}
+    </h3>
     <ul class="mt-2">
       <li v-for="friend in getFriends" :key="friend.id">
         {{ friend.username }}
@@ -54,8 +58,14 @@
 </template>
 
 <script>
+import { useI18n } from 'vue-i18n'
+
 export default {
   name: 'CreateGame',
+  setup() {
+    const { t, locale } = useI18n()
+    return { t, locale }
+  },
   props: ['roomId'],
   data() {
     return {

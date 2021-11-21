@@ -16,16 +16,18 @@
       </svg>
     </router-link>
     <!-- end ARROW icon -->
-    <h2 class="text-2xl text-gray-100 mb-4">Jugadores</h2>
+    <h2 class="text-2xl text-gray-700 mb-4">
+        {{ t('pages.players.title', {}, { locale: $store.getters.lang }) }}
+    </h2>
     <form
       @submit.prevent="searchPlayer"
-      class="flex bg-white max-w-xs items-center px-2 py-1 rounded-xl mb-4"
+      class="flex bg-white max-w-xs items-center px-2 py-1 rounded-xl mb-4 border-2 border-gray-400"
     >
       <input
         v-model="search"
         type="text"
-        placeholder="Buscar"
-        class="w-full outline-none text-gray-600 text-lg"
+        :placeholder="t('pages.players.searchPlayer', {}, { locale: $store.getters.lang })"
+        class="w-full outline-none text-gray-600"
         autofocus
       />
       <svg
@@ -44,7 +46,7 @@
       </svg>
     </form>
 
-    <p v-for="player in getPlayers" :key="player.id" class="mt-2">
+    <p v-for="player in getPlayers" :key="player.id" class="mt-4">
       <span class="mr-2">{{ player.username }} - {{ player.score }}</span>
       <button
         @click="addPlayer(player.id)"
@@ -59,21 +61,27 @@
           transition-colors
           ease
           duration-300
+          text-white
         "
       >
-        + Agregar
+        + {{t('pages.players.addPlayer', {}, { locale: $store.getters.lang })}}
       </button>
     </p>
   </section>
 </template>
 
 <script>
+import { useI18n } from 'vue-i18n'
 import axios from 'axios'
 import { createToast } from 'mosha-vue-toastify'
 import 'mosha-vue-toastify/dist/style.css'
 
 export default {
   name: 'Players',
+  setup() {
+    const { t, locale } = useI18n()
+    return { t, locale }
+  },
   data() {
     return {
       players: [],

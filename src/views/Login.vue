@@ -1,11 +1,13 @@
 <template>
   <section id="signup">
-    <!-- <button @click="toggleLang">Cambiar idioma</button>
-    <h1>{{ t('test', {}, { locale: lang }) }}</h1> -->
-    <h2 class="text-3xl text-center font-bold my-6">Iniciar sesión</h2>
+    <h2 class="text-3xl text-center font-bold my-6">
+      {{ t('pages.login.title', {}, { locale: $store.getters.lang }) }}
+    </h2>
     <form @submit.prevent="login" class="max-w-xs mx-auto">
       <div class="mb-3">
-        <label for="email" class="block">Correo</label>
+        <label for="email" class="block">
+          {{ t('pages.login.form.email', {}, { locale: $store.getters.lang }) }}
+        </label>
         <input
           type="email"
           name="email"
@@ -18,7 +20,11 @@
         </p>
       </div>
       <div class="mb-3">
-        <label for="password" class="block">Contraseña</label>
+        <label for="password" class="block">
+          {{
+            t('pages.login.form.password', {}, { locale: $store.getters.lang })
+          }}
+        </label>
         <input
           type="password"
           name="password"
@@ -34,13 +40,13 @@
         type="submit"
         class="bg-blue-500 py-1 w-full mt-2 font-medium text-white"
       >
-        Iniciar sesión
+        {{ t('pages.login.form.btn', {}, { locale: $store.getters.lang }) }}
       </button>
-      <span class="mt-6 block"
-        >¿No tienes cuenta?
-        <router-link class="font-semibold" to="/signup"
-          >registrate</router-link
-        ></span
+      <span class="mt-6 block">
+        {{ t('pages.login.form.msg', {}, { locale: $store.getters.lang }) }}
+        <router-link class="font-semibold" to="/signup">{{
+          t('pages.login.form.cta', {}, { locale: $store.getters.lang })
+        }}</router-link></span
       >
     </form>
   </section>
@@ -92,10 +98,11 @@ export default {
       if (this.formData.password == '') {
         this.formData.passwordError = true
         this.formData.passwordMsg = 'Introduce tu contraseña'
-      } 
+      }
       if (this.formData.password.length <= 6) {
         this.formData.passwordError = true
-        this.formData.passwordMsg = 'La contraseña debe ser mayor a 6 caracteres'
+        this.formData.passwordMsg =
+          'La contraseña debe ser mayor a 6 caracteres'
       }
       return !this.formData.passwordError && !this.formData.emailError
     },

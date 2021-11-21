@@ -1,3 +1,47 @@
 {
-  "test": "test"
+  "test": "test",
+  "pages": {
+    "home": {
+      "createGameBtn": "Create match",
+      "playersBtn": "Players",
+      "profileBtn": "Profile",
+      "rankingBtn": "Ranking"
+    },
+    "login": {
+      "title": "Log In",
+      "form": {
+        "email": "Email",
+        "password": "Password",
+        "btn": "Log In",
+        "msg": "Don't have an account?",
+        "cta": "sign up"
+      }
+    },
+    "signup": {
+      "title": "Sign Up",
+      "form": {
+        "email": "Email",
+        "username": "Username",
+        "password": "Password",
+        "repeatPassword": "Repeat password",
+        "usernameMsg": "Type a username longer than 4 characters",
+        "emailMsg" : "Type a valid email",
+        "passwordMsg" : "Type a password longer than 6 characters",
+        "repeatPasswordMsg" : "Passwords don't match",
+        "btn": "Sign Up",
+        "msg": "Got an account?",
+        "cta": "log in"
+      }
+    },
+    "createGame": {
+      "title": "Create match",
+      "startBtn": "Start game",
+      "onlinePlayers": "Online players"
+    },
+    "players": {
+      "title": "Players",
+      "searchPlayer": "Search player",
+      "addPlayer": "Add"
+    }
+  }
 }

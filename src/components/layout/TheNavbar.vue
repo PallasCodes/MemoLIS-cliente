@@ -3,11 +3,11 @@
     class="sticky w-full py-3 flex justify-between items-center text-blue-600"
   >
     <div class="flex items-center">
-      <img src="/favicon.png" alt="MemoKIS icon" class="mr-2 h-6 w-6">
+      <img src="/favicon.png" alt="MemoKIS icon" class="mr-2 h-6 w-6" />
       <h1 class="text-3xl font-bold">MemoLIS</h1>
     </div>
-    <div class="flex items-center justify-center" v-if="isLoggedIn">
-      <div class="relative" @click="openNotifications">
+    <div class="flex items-center justify-center">
+      <div class="relative" @click="openNotifications" v-if="isLoggedIn">
         <div id="bells">
           <!-- FULL BELL icon -->
           <svg
@@ -144,8 +144,56 @@
       </svg>
       <!-- end CONFIG icon -->
 
+      <div class="relative">
+        <button @click="langOpened = !langOpened">
+          <!-- LANG icon -->
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="nav-btn mr-2"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"
+            />
+          </svg>
+          <!-- end LANG icon -->
+        </button>
+        <div
+          v-if="langOpened"
+          class="
+            absolute
+            bg-white
+            right-0
+            text-gray-700
+            rounded-md
+            shadow
+            border border-gray-100
+            mt-2
+          "
+        >
+          <button
+            class="block hover:bg-gray-100 px-6 py-2 w-full"
+            @click="toggleLang('es')"
+          >
+            Español
+          </button>
+          <button
+            class="block hover:bg-gray-100 px-6 py-2 w-full"
+            @click="toggleLang('en')"
+          >
+            English
+          </button>
+        </div>
+      </div>
+
       <!-- LOGOUT icon -->
       <svg
+        v-if="isLoggedIn"
         xmlns="http://www.w3.org/2000/svg"
         class="nav-btn"
         fill="none"
@@ -174,6 +222,7 @@ export default {
     return {
       notifications: [],
       notifAreOpened: false,
+      langOpened: false,
     }
   },
   computed: {
@@ -195,6 +244,11 @@ export default {
     },
   },
   methods: {
+    toggleLang(lang) {
+      if(lang != this.$store.getters.lang)
+        this.$store.commit('setLang', lang)
+      this.langOpened = false
+    },
     logout() {
       this.$store.dispatch('logout')
     },
@@ -217,7 +271,7 @@ export default {
     respondGameRequest(response, roomId) {
       if (response === true) {
         this.$store.commit('setRoomId', roomId)
-        this.$router.replace({ name: 'Lobby'})
+        this.$router.replace({ name: 'Lobby' })
       }
     },
   },

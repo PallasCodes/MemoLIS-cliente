@@ -24,5 +24,8 @@ export default {
   },
   flipCard(state, payload) {
     state.game.cards[payload.index].player = payload.player
+  },
+  setLang(state, payload) {
+    state.lang = payload
   }
 }
