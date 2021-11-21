@@ -97,9 +97,7 @@
         <li v-for="player in getPlayers" :key="player.userId">
           <span
             class="text-lg font-semibold"
-            :class="
-              getTurn === player.userId ? '' : 'text-blue-500 font-bold'
-            "
+            :class="getTurn === player.userId ? 'text-blue-500 font-bold' : ''"
             >{{ player.username }}</span
           >
           <span class="text-gray-400 ml-2">{{ player.score }}pts</span>
@@ -143,21 +141,17 @@ export default {
       const card = this.$store.getters.game.cards[index]
       // check if it's the player's turn and the card isn't flipped yet
       if (this.getTurn == this.$store.getters.userId && !card.player) {
-        // card flip animation
-        this.$store.commit('flipCard', {
-          index,
-          player: this.$store.getters.userId,
-        })
-
         // cache cards state
         if (!this.card1) {
+          // emit card flip to room
           this.card1 = this.cards[index]
-          this.$store.commit('flipCard', {
-            index,
-            player: this.$store.getters.userId,
-          })
+          this.card1.index = index
+          this.$socket.emit('GAME_cardFlip', this.card1)
         } else if (!this.card2) {
+          // emit card flip to room
           this.card2 = this.cards[index]
+          this.card2.index = index
+          this.$socket.emit('GAME_cardFlip', this.card2)
           // send turn
           this.$socket.emit('GAME_turn', {
             card1: this.card1,
@@ -177,6 +171,12 @@ export default {
     },
   },
   sockets: {
+    GAME_cardFlip(card) {
+      this.$store.commit('flipCard', {
+        index: card.index,
+        player: card.player,
+      })
+    },
     GAME_message(message) {
       this.messages.push(message)
     },
