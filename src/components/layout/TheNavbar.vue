@@ -3,17 +3,37 @@
     class="sticky w-full py-3 flex justify-between items-center text-blue-600"
   >
     <div class="flex items-center">
-      <img src="/favicon.png" alt="MemoKIS icon" class="mr-2 h-6 w-6" />
+      <img src="/favicon.png" alt="MemoKIS icon" class="mr-3 h-6 w-6" />
       <h1 class="text-3xl font-bold">MemoLIS</h1>
     </div>
     <div class="flex items-center justify-center">
-      <div class="relative" @click="openNotifications" v-if="isLoggedIn">
-        <div id="bells">
+      <button class="relative" @click="openNotifications" v-if="isLoggedIn">
+        <div class="relative">
+          <div
+            v-if="notifications.length > 0"
+            class="
+              flex
+              items-center
+              absolute
+              text-red
+              bg-gray-200
+              text-xs
+              rounded-full
+              text-center
+              top-0
+              right-0
+            "
+            style="width: 18px; height: 18px; margin-top: -6px"
+          >
+            <span style="margin-left: 5.5px; font-weight: 500">
+              {{ notifications.length }}</span
+            >
+          </div>
           <!-- FULL BELL icon -->
           <svg
-            v-if="notifications.length >= 1"
+            v-if="notifAreOpened"
             xmlns="http://www.w3.org/2000/svg"
-            class="nav-btn mr-2"
+            class="nav-btn mr-3"
             viewBox="0 0 20 20"
             fill="currentColor"
           >
@@ -25,9 +45,9 @@
 
           <!-- BELL icon -->
           <svg
-            v-if="notifications.length < 1"
+            v-if="!notifAreOpened"
             xmlns="http://www.w3.org/2000/svg"
-            class="nav-btn mr-2"
+            class="nav-btn mr-3"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -41,7 +61,6 @@
           </svg>
           <!-- end BELL icon -->
         </div>
-
         <!-- NOTIFICATIONS -->
         <div
           v-if="openedNotif && notifications.length >= 1"
@@ -119,37 +138,14 @@
           </div>
         </div>
         <!-- end NOTIFICATIONS -->
-      </div>
-
-      <!-- CONFIG icon -->
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        class="nav-btn mr-2"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke="currentColor"
-      >
-        <path
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="2"
-          d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
-        />
-        <path
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="2"
-          d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-        />
-      </svg>
-      <!-- end CONFIG icon -->
+      </button>
 
       <div class="relative">
         <button @click="langOpened = !langOpened">
           <!-- LANG icon -->
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            class="nav-btn mr-2"
+            class="nav-btn mr-3"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -245,18 +241,14 @@ export default {
   },
   methods: {
     toggleLang(lang) {
-      if(lang != this.$store.getters.lang)
-        this.$store.commit('setLang', lang)
+      if (lang != this.$store.getters.lang) this.$store.commit('setLang', lang)
       this.langOpened = false
     },
     logout() {
       this.$store.dispatch('logout')
     },
     openNotifications() {
-      // check if the event is triggered by the bell icon
-      if (event.target.classList.contains('nav-btn')) {
-        this.notifAreOpened = !this.notifAreOpened
-      }
+      this.notifAreOpened = !this.notifAreOpened
     },
     respondRequest(response, notifId, sentTo) {
       axios

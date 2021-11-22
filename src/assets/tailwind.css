@@ -6,7 +6,7 @@
 
 
 .menu-btn {
-  @apply bg-lime-400 text-white text-xl font-bold py-2 hover:bg-lime-500 transition-colors ease-in-out duration-500;
+  @apply bg-blue-500 text-white text-xl font-bold py-2 hover:bg-blue-600 transition-colors ease-in-out duration-500;
 }
 
 body {
