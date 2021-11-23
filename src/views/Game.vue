@@ -181,12 +181,14 @@ export default {
       this.messages.push(message)
     },
     GAME_turn(game) {
-      this.$store.commit('setGame', game)
+      setTimeout(() => this.$store.commit('setGame', game), 2000)
     },
     GAME_gameOver(game) {
-      this.$store.commit('setGame', game)
-      this.opened = true
-      this.winner = game.winner
+      setTimeout(() => {
+        this.$store.commit('setGame', game)
+        this.opened = true
+        this.winner = game.winner
+      }, 2100);
     },
   },
   mounted() {

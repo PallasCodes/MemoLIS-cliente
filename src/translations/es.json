@@ -36,7 +36,8 @@
     "createGame": {
       "title": "Crear partida",
       "startBtn": "Iniciar partida",
-      "onlinePlayers": "Jugadores en línea"
+      "onlinePlayers": "Jugadores en línea",
+      "numPairs": "Número de pares"
     },
     "players": {
       "title": "Jugadores",

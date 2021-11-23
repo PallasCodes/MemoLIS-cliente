@@ -16,17 +16,30 @@
       </svg>
     </router-link>
     <!-- end ARROW icon -->
-    <h2 class="text-2xl" :disabled="lobby.length>0">
-       {{ t('pages.createGame.title', {}, { locale: $store.getters.lang }) }}
+    <h2 class="text-2xl" :disabled="lobby.length > 0">
+      {{ t('pages.createGame.title', {}, { locale: $store.getters.lang }) }}
     </h2>
     <button
       @click="startGame"
-      class="p-2 text-lg rounded font-semibold text-white bg-blue-500 my-6"
+      class="py-2 px-3 text-sm rounded font-semibold text-white bg-blue-500 mt-6 mb-4 block"
     >
-     {{ t('pages.createGame.startBtn', {}, { locale: $store.getters.lang }) }}
+      {{ t('pages.createGame.startBtn', {}, { locale: $store.getters.lang }) }}
     </button>
-    <h3 class="text-lg mt-2">
-      {{ t('pages.createGame.onlinePlayers', {}, { locale: $store.getters.lang }) }}
+    <label class="block mt-2">
+      {{
+        t('pages.createGame.numPairs', {}, { locale: $store.getters.lang })
+      }}
+    </label>
+    <input
+      v-model="numPairs"
+      type="number"
+      style="width: 200px !important"
+      class="input block"
+    />
+    <h3 class="text-lg mt-8">
+      {{
+        t('pages.createGame.onlinePlayers', {}, { locale: $store.getters.lang })
+      }}
     </h3>
     <ul class="mt-2">
       <li v-for="friend in getFriends" :key="friend.id">
@@ -71,6 +84,7 @@ export default {
     return {
       friends: [],
       lobby: [],
+      numPairs: 6,
     }
   },
   computed: {
@@ -91,23 +105,25 @@ export default {
       this.friends.push(user)
     },
     USER_userDisconnected(user) {
-      this.friends = this.friends.filter((friend) => friend.userId != user.userId)
+      this.friends = this.friends.filter(
+        (friend) => friend.userId != user.userId
+      )
     },
     ROOM_userJoined(user) {
       this.lobby.push(user)
     },
     GAME_gameStarted(game) {
       this.$store.commit('setGame', game)
-      this.$router.replace({ name: 'Game'})
-    }
+      this.$router.replace({ name: 'Game' })
+    },
   },
   methods: {
     sendInvite(socketId) {
       this.$socket.emit('USER_gameRequest', socketId)
     },
     startGame() {
-      this.$socket.emit('ROOM_startGame')
-    }
+      this.$socket.emit('ROOM_startGame', ++this.numPairs)
+    },
   },
   mounted() {
     this.$socket.emit('ROOM_join', this.$store.getters.roomId)

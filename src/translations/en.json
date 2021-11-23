@@ -36,7 +36,8 @@
     "createGame": {
       "title": "Create match",
       "startBtn": "Start game",
-      "onlinePlayers": "Online players"
+      "onlinePlayers": "Online players",
+      "numPairs": "Number of pairs"
     },
     "players": {
       "title": "Players",
