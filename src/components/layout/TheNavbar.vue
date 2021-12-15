@@ -2,6 +2,9 @@
   <nav
     class="sticky w-full py-3 flex justify-between items-center text-blue-600"
   >
+  <!-- NOTIFICATION SOUND -->
+  <audio src="/sounds/notif.ogg" ref="notif"></audio>
+
     <div class="flex items-center">
       <img src="/favicon.png" alt="MemoKIS icon" class="mr-3 h-6 w-6" />
       <h1 class="text-3xl font-bold">MemoLIS</h1>
@@ -237,6 +240,7 @@ export default {
     USER_gameRequest(notification) {
       notification.type = 'gameRequest'
       this.notifications.push(notification)
+      this.$refs.notif.play()
     },
   },
   methods: {
