@@ -9,6 +9,7 @@ import CreateGame from '../views/CreateGame.vue'
 import Game from '../views/Game.vue'
 import Lobby from '../views/Lobby.vue'
 import PageNotFound from '../views/PageNotFound.vue'
+import Verify from '../views/Verify.vue'
 
 const routes = [
   {
@@ -51,6 +52,12 @@ const routes = [
     name: 'SignUp',
     path: '/signup',
     component: SignUp,
+    meta: { requiresUnauth: true },
+  },
+  {
+    name: 'Verify',
+    path: '/verify/:token',
+    component: Verify,
     meta: { requiresUnauth: true },
   },
   // 404

@@ -25,5 +25,8 @@ export default {
   },
   lang(state) {
     return state.lang
+  },
+  validated(state) {
+    return state.validated
   }
 }

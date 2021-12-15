@@ -13,6 +13,7 @@ export default {
       onlinePlayers: [],
       game: null,
       lang: 'es',
+      validated: null
     }
   },
   mutations,

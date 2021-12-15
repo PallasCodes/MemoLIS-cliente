@@ -123,20 +123,37 @@ export default {
           this.$router.replace(redirectUrl)
         } catch (error) {
           console.error(error)
-          createToast(
-            {
-              title: 'Error',
-              description:
-                'Ocurrió un error en el servidor. Inténtalo más tarde.',
-            },
-            {
-              type: 'danger',
-              hideProgressBar: true,
-              transition: 'slide',
-              position: 'bottom-right',
-              showIcon: true,
-            }
-          )
+          if (error.response.status == 403) {
+             createToast(
+              {
+                title: 'Error',
+                description:
+                  'No haz verificado tu email.',
+              },
+              {
+                type: 'warning',
+                hideProgressBar: true,
+                transition: 'slide',
+                position: 'bottom-right',
+                showIcon: true,
+              }
+            )
+          } else {
+            createToast(
+              {
+                title: 'Error',
+                description:
+                  'Ocurrió un error en el servidor. Inténtalo más tarde.',
+              },
+              {
+                type: 'danger',
+                hideProgressBar: true,
+                transition: 'slide',
+                position: 'bottom-right',
+                showIcon: true,
+              }
+            )
+          }
         }
       }
     },

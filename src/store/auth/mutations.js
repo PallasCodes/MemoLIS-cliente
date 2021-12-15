@@ -27,5 +27,8 @@ export default {
   },
   setLang(state, payload) {
     state.lang = payload
+  },
+  setValidated(state, payload) {
+    state.validated = payload
   }
 }
