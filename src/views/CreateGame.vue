@@ -21,21 +21,32 @@
     </h2>
     <button
       @click="startGame"
-      class="py-2 px-3 text-sm rounded font-semibold text-white bg-blue-500 mt-6 mb-4 block"
+      class="
+        py-2
+        px-3
+        text-sm
+        rounded
+        font-semibold
+        text-white
+        bg-blue-500
+        mt-6
+        mb-4
+        block
+      "
     >
       {{ t('pages.createGame.startBtn', {}, { locale: $store.getters.lang }) }}
     </button>
     <label class="block mt-2">
-      {{
-        t('pages.createGame.numPairs', {}, { locale: $store.getters.lang })
-      }}
+      {{ t('pages.createGame.numPairs', {}, { locale: $store.getters.lang }) }}
     </label>
-    <input
-      v-model="numPairs"
-      type="number"
-      style="width: 200px !important"
-      class="input block"
-    />
+    <div class="w-32">
+      <select v-model="numPairs" class="input" >
+        <option value="9" selected>9</option>
+        <option value="12">12</option>
+        <option value="15">15</option>
+        <option value="15">18</option>
+      </select>
+    </div>
     <h3 class="text-lg mt-8">
       {{
         t('pages.createGame.onlinePlayers', {}, { locale: $store.getters.lang })
@@ -84,7 +95,7 @@ export default {
     return {
       friends: [],
       lobby: [],
-      numPairs: 6,
+      numPairs: 9,
     }
   },
   computed: {
@@ -122,11 +133,14 @@ export default {
       this.$socket.emit('USER_gameRequest', socketId)
     },
     startGame() {
-      this.$socket.emit('ROOM_startGame', ++this.numPairs)
+      console.log(this.numPairs)
+      this.$socket.emit('ROOM_startGame', parseInt(this.numPairs))
     },
   },
   mounted() {
-    this.$socket.emit('ROOM_join', this.$store.getters.roomId)
+    setTimeout(() => {
+      this.$socket.emit('ROOM_join', this.$store.getters.roomId)
+    }, 1250)
   },
 }
 </script>

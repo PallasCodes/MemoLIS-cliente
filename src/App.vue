@@ -19,15 +19,17 @@ export default {
   components: {
     TheNavbar,
   },
-  async mounted() {
+  mounted() {
     try {
-      await this.$store.dispatch('autoLogin')
-      if (this.$store.getters.isAuthenticated) {
-        this.$socket.emit('USER_login', {
-          userId: this.$store.getters.userId,
-          username: this.$store.getters.username,
-        })
-      }
+      this.$store.dispatch('autoLogin')
+      setTimeout(() => {
+        if (this.$store.getters.isAuthenticated) {
+          this.$socket.emit('USER_login', {
+            userId: this.$store.getters.userId,
+            username: this.$store.getters.username,
+          })
+        }
+      }, 1000)
     } catch (error) {
       createToast(
         {

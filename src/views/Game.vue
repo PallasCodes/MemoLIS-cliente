@@ -140,7 +140,11 @@ export default {
     flipCard(index) {
       const card = this.$store.getters.game.cards[index]
       // check if it's the player's turn and the card isn't flipped yet
-      if (this.getTurn == this.$store.getters.userId && !card.player) {
+      if (
+        this.getTurn == this.$store.getters.userId &&
+        !card.player &&
+        (!this.card1 || !this.card2)
+      ) {
         // cache cards state
         if (!this.card1) {
           // emit card flip to room
@@ -157,9 +161,6 @@ export default {
             card1: this.card1,
             card2: this.card2,
           })
-          // reset selection cards state
-          this.card1 = null
-          this.card2 = null
         }
       } else {
         console.log('not your turn')
@@ -181,14 +182,19 @@ export default {
       this.messages.push(message)
     },
     GAME_turn(game) {
-      setTimeout(() => this.$store.commit('setGame', game), 2000)
+      setTimeout(() => {
+        this.$store.commit('setGame', game)
+        // reset selection cards state
+        this.card1 = null
+        this.card2 = null
+      }, 2000)
     },
     GAME_gameOver(game) {
       setTimeout(() => {
         this.$store.commit('setGame', game)
         this.opened = true
         this.winner = game.winner
-      }, 2100);
+      }, 2100)
     },
   },
   mounted() {
